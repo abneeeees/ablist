@@ -1,0 +1,18 @@
+[project]
+name = "ablist"
+version = "0.0.1"
+authors = [
+  { name="Avneesh Kumar", email="abneeeees@proton.me" },
+]
+description = "ablist is a bruteforcing-tool to generate custom wordlist."
+readme = "README.md"
+requires-python = ">=3.9"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+]
+license = "GPLv3"
+
+[project.urls]
+Homepage = "https://github.com/abneeeees/ablist"
+Issues = "https://github.com/abneeeees/ablist/issues"
