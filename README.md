@@ -1,43 +1,66 @@
 # ablist
----
 
-**ablist** is a `bruteforcing-tool` to generate custom wordlist out of given set of words. It has been created to help in tasks such as **Bruteforcing**,  **Password Cracking**, **or just creating a bunch of passwords out of something**
+**ablist** is a command-line **bruteforcing tool** used to generate **custom wordlists** from a given set of words.  
+It is designed to assist in tasks such as **bruteforcing**, **password cracking**, or simply **generating multiple password combinations** based on custom inputs.
 
 ---
 
 ## Key Features
-- Create a custom wordlist out of given set of words.
-- Create the wordlist in a custom file of choice.
-- Lets you choose Numbers of words to get in output(1-30).
-- Lets you choose between 4 different modes to create the wordlist
+- Generate custom wordlists from a given set of words
+- Save output to a file format of your choice
+- Control the number of words generated in the output *(1–30)*
+- Choose between **four different generation modes**
+- Simple and lightweight CLI usage
+
+---
 
 ---
 
 ## Installation
 
-### PiP Installation
+### uv Installation
+- [uv](https://docs.astral.sh/uv/getting-started/installation/#__tabbed_1_2) is an extremely fast Python package and project manager, written in Rust. 
+
+##### For macOS and Linux
 ```sh
-pip install ablist
-```
-### Updating ablist
-```sh
-pip install -U ablist
+curl -LsSf https://astral.sh/uv/install.sh | sh
 ```
 
+##### Windows
+```sh
+powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
+```
+---
+
+## Running
+
+```sh
+git clone https://github.com/abneeeees/ablist.git
+cd ablist
+uv sync
+uv run ablist
+```
 ---
 
 ## Building
 
-### Building ablist from the source.
 ```sh
 git clone https://github.com/abneeeees/ablist.git
 cd ablist
+uv sync
+uv build
+pip install dist/ablist-0.1.0-py3-none-any.whl
 ```
 
 ---
 
+## Developing
+```sh
+pip install -e .
+```
+
 ## Usage
-Every uscase and flag is exlained in [Docs](https://github.com/abneeeees/ablist/blob/main/docs.md)
+Every usecase and flag is exlained in [Docs](https://github.com/abneeeees/ablist/blob/main/docs/docs.md)
 
 ---
 
@@ -46,7 +69,12 @@ Every uscase and flag is exlained in [Docs](https://github.com/abneeeees/ablist/
 - `token.py` takes command line inputs, create their tokens and store them sperately 
 - `arguments.py` handles commmand line and flags
 - `logic.py` contains logic of all the flags and functionality.
-- `file.py` for file handling and stuff
+- `file.py` for file handling
+
+---
+
+## Contributing
+- Contributions are welcome <3
 
 ---
 
