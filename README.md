@@ -14,8 +14,6 @@ It is designed to assist in tasks such as **bruteforcing**, **password cracking*
 
 ---
 
----
-
 ## Installation
 
 ### uv Installation
@@ -74,7 +72,7 @@ Every usecase and flag is exlained in [Docs](https://github.com/abneeeees/ablist
 ---
 
 ## Contributing
-- Contributions are welcome <3
+- Contributions are welcome 💚
 
 ---
 
