@@ -1,5 +1,7 @@
+from ablist.argument import *
+
 def main():
-    print("ablist")
+    args = parser.parse_args()
 
 if __name__ == "__main__":
     main()
