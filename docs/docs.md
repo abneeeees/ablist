@@ -37,10 +37,10 @@ It is designed to assist in tasks such as **bruteforcing**, **password cracking*
 - example `ablist -o <filetype> <filename>` or `ablist --output <filetype> <filename>`
 - Available filetypes: `.pdf` `.xml` `.txt`
 - Types: 
-    - `ablist -o -oA <filename>` : for output in all format
-    - `ablist -o -oP <filename>` : for output in .pdf format
-    - `ablist -o -oX <filename>` : for output in .xml format
-    - `ablist -o -oT <filename>` : for output in .txt format **Default**
+    - `ablist -oA <filename>` : for output in all format
+    - `ablist -oP <filename>` : for output in .pdf format
+    - `ablist -oX <filename>` : for output in .xml format
+    - `ablist -oT <filename>` : for output in .txt format **Default**
 
 
 ### -m --mode
