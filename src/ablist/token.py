@@ -216,7 +216,7 @@ class PatternBasedListType:
 
         # examples: my_password, user_name_1
     def snake_case_tokens(self, word:str) -> list:
-        snake_case_regex = r'(.*?)_([a-zA-Z0-9])'
+        snake_case_regex = r'^[a-z0-9]+(_[a-z0-9]+)+$'
 
         if re.match(snake_case_regex, word):
             self.snake_case.append(word)
