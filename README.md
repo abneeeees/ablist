@@ -14,6 +14,40 @@ It is designed to assist in tasks such as **bruteforcing**, **password cracking*
 
 ---
 
+## File Structure
+```sh
+├── docs
+│   └── docs.md             # User guide, usage instructions, and feature explanations for ablist.
+├── LICENSE
+├── pyproject.toml          # Project configuration file for packaging, dependencies, and build settings.
+├── README.md
+├── requirements.txt
+├── src
+│   ├── ablist
+│   │   ├── argument.py             # Handles CLI argument parsing, validation, and flag processing.
+│   │   ├── core
+│   │   │   ├── engine.py           #Main controller that decides which generation mode and operations to run.
+│   │   │   └── pipeline.py             # Executes word generation workflow (mutate → combine → decorate → return results).
+│   │   ├── decorators
+│   │   │   ├── prefix.py           #Adds prefixes.
+│   │   │   ├── suffix.py           # Adds suffixes
+│   │   │   └── wrapper.py          # Wraps words with surrounding characters or symbols (e.g., {word}, @word@).
+│   │   ├── file.py             # Handles saving generated wordlists into different output formats (txt, pdf, xml, etc.).
+│   │   ├── __init__.py
+│   │   ├── __main__.py
+│   │   ├── mutator.py          # Applies transformations to individual words (case changes, numeric variations, symbol mutations).
+│   │   ├── structure
+│   │   │   ├── combine.py          # Creates basic word combinations by joining words in order.
+│   │   │   ├── pairwise.py             # Generates combinations between word pairs.
+│   │   │   ├── permutation.py          # Generates all possible word order permutations.
+│   │   │   └── subset.py           # Generates subsets of input words based on size or limit constraints.
+│   │   └── token.py            # Classifies input words into categories (text types, numbers, patterns, dates, etc.).
+├── tests
+    └── test_tokens.py
+```
+
+---
+
 ## Installation
 
 ### uv Installation
