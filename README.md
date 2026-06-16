@@ -14,6 +14,28 @@ It is designed to assist in tasks such as **bruteforcing**, **password cracking*
 
 ---
 
+## File Structure
+```sh
+├── docs
+│   └── docs.md
+├── LICENSE
+├── pyproject.toml
+├── README.md
+├── requirements.txt
+├── src
+│   ├── ablist
+│   │   ├── argument.py
+│   │   ├── engine.py
+│   │   ├── file.py
+│   │   ├── __init__.py
+│   │   ├── __main__.py
+│   │   └── token.py
+├── tests
+    └── test_tokens.py
+```
+
+---
+
 ## Installation
 
 ### uv Installation

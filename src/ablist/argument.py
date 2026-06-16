@@ -46,18 +46,16 @@ parser.add_argument(
 
 # handles -o and --output flag
 parser.add_argument(
-    '-o', '--output',
-    nargs=2,
-    metavar=('<TYPE>', '<FILENAME>'),
-    default=['D', None],
-    required=False,
-    help=('''Get an output file of the wordlist
-        -oA <filename> : for output in all format
-        -oD <filename> : for output directlty on the terminal screen
-        -oP <filename> : for output in .pdf format
-        -oX <filename> : for output in .xml format
-        -oT <filename> : for output in .txt format Default'''
-    )
+    "-o", "--output",
+    nargs="*",
+    metavar=("TYPE", "FILENAME"),
+    default=["D", None],
+    help="""
+        Output options:
+          -o B filename    Output to both terminal and file
+          -o D             Output only to terminal (default)
+          -o T filename    Output only to a text file
+"""
 )
 
 # handles -m and --mode flag
