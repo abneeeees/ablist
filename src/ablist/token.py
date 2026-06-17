@@ -17,50 +17,28 @@ import re
  
 class TextBasedListType:
     def __init__(self):
-        self.lowercase = []
-        self.uppercase = []
-        self.alphanumeric = []
-        self.capitalize = []
-        self.special_char_only = []
+        self.capitalize_regex = r'^[A-Z][a-z]+$'
+        self.special_char_only_regex = r'^[^a-zA-Z0-9\t\n ]+$'
 
     # examples: admin, password, user
-    def lowercase_tokens(self, word:str) -> list:
-        if word.isalpha() and word.islower():
-            self.lowercase.append(word)
-
-        return self.lowercase
+    def lowercase_tokens(self, word:str) -> bool:
+        return word.isalpha() and word.islower()
 
         # examples: ADMIN, ROOT, USER
-    def uppercase_tokens(self, word:str) -> list:
-        if word.isalpha() and word.isupper():
-            self.uppercase.append(word)
-
-        return self.uppercase
+    def uppercase_tokens(self, word:str) -> bool:
+        return word.isalpha() and word.isupper()
 
         # examples: admin123, user2024, pass01
-    def alphanumeric_tokens(self, word:str) -> list:
-        if word.isalnum() and word.isalpha()==False and word.isdigit()==False:
-            self.alphanumeric.append(word)
-
-        return self.alphanumeric
+    def alphanumeric_tokens(self, word:str) -> bool:
+        return word.isalnum() and not word.isalpha() and not word.isdigit()
     
         # examples: Admin, Password, User
-    def capitalized_tokens(self, word:str) -> list:
-        capitalize_regex = r'^[A-Z][a-z]+$'
-        
-        if re.match(capitalize_regex, word):
-            self.capitalize.append(word)
-
-        return self.capitalize
+    def capitalized_tokens(self, word:str) -> bool:
+        return bool(re.match(self.capitalize_regex, word))
 
         # examples: @@@, ###, !!!, $$
-    def special_char_only_tokens(self, word:str) -> list:
-        special_char_only_regex = r'^[^a-zA-Z0-9\t\n ]+$'
-
-        if re.match(special_char_only_regex, word):
-            self.special_char_only.append(word)
-
-        return self.special_char_only
+    def special_char_only_tokens(self, word:str) -> bool:
+        return bool(re.match(self.special_char_only_regex, word))
 
 # ----------------------------------------
 # Number Tokens are stored in this class
@@ -68,56 +46,31 @@ class TextBasedListType:
 
 class NumberBasedListType:
     def __init__(self):
-        self.integer = []
-        self.floater = []
-        self.short_number = []
-        self.long_number = []
-        self.padded_number = []
+        self.integer_regex = r'^[+-]?\d+$'
+        self.floater_regex = r'^[+-]?\d+\.\d+$'
+        self.short_number_regex = r'^[+-]?\d{1,5}$'
+        self.long_number_regex = r'^[+-]?\d{6,}$'
+        self.padded_number_regex = r'^[0]{1,}+[0-9]{1}+$'
 
         # examples: 3.14, 0.99
-    def int_tokens(self, word:str) -> list:
-        integer_regex = r'^[+-]?\d+$'
-
-        if re.match(integer_regex, word):
-            self.integer.append(word)
-
-        return self.integer
+    def int_tokens(self, word:str) -> bool:
+        return bool(re.match(self.integer_regex, word))
 
         # examples: 3.14, 0.99
-    def float_tokens(self, word:str) -> list:
-        floater_regex = r'^[+-]?\d+\.\d+$'
-
-        if re.match(floater_regex, word):
-            self.floater.append(word) 
-
-        return self.floater
+    def float_tokens(self, word:str) -> bool:
+        return bool(re.match(self.floater_regex, word))
 
         # examples: 1, 7, 9
-    def short_number_tokens(self, word:str) -> list:
-        short_number_regex = r'^[+-]?\d{1,5}$'
-
-        if re.match(short_number_regex, word):
-            self.short_number.append(word) 
-
-        return self.short_number
+    def short_number_tokens(self, word:str) -> bool:
+        return bool(re.match(self.short_number_regex, word))
 
         # examples: 123456, 987654321
-    def long_number_tokens(self, word:str) -> list:
-        long_number_regex = r'^[+-]?\d{6,}$'
-
-        if re.match(long_number_regex, word):
-            self.long_number.append(word) 
-
-        return self.long_number
+    def long_number_tokens(self, word:str) -> bool:
+        return bool(re.match(self.long_number_regex, word))
 
         # examples: 001, 007, 0001
-    def padded_number_tokens(self, word:str) -> list:
-        padded_number_regex = r'^[0]{1,}+[0-9]{1}+$'
-
-        if re.match(padded_number_regex, word):
-            self.padded_number.append(word)
-
-        return self.padded_number
+    def padded_number_tokens(self, word:str) -> bool:
+        return bool(re.match(self.padded_number_regex, word))
     
 # ----------------------------------------
 # DateTime Tokens are stored in this class
@@ -125,65 +78,83 @@ class NumberBasedListType:
  
 class DateTimeListType:
     def __init__(self):
-        self.date_ddmmyyyy = []
-        self.date_yyyymmdd = []
-        self.month_name = []
-        self.weekday = []
-        self.time_list = []
-        self.weeks = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday']
-        self.months = ["january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december"]
+        self.WEEKS = {
+            'monday', 'tuesday', 'wednesday',
+            'thursday', 'friday', 'saturday', 'sunday'
+        }
 
-        # examples: 12-08-2004, 01-01-2020
-    def date_ddmmyyyy_tokens(self, word:str) -> list:
-        formats = [r'%d-%m-%Y', r'%d/%m/%Y', r'%d\%m\%Y']
-        for format in formats:
+        self.MONTHS = {
+            'january', 'february', 'march',
+            'april', 'may', 'june',
+            'july', 'august', 'september',
+            'october', 'november', 'december'
+        }
+
+        self.DDMMYYYY_FORMATS = (
+            '%d-%m-%Y',
+            '%d/%m/%Y',
+            '%d\\%m\\%Y',
+        )
+
+        self.YYYYMMDD_FORMATS = (
+            '%Y-%m-%d',
+            '%Y/%m/%d',
+            '%Y\\%m\\%d',
+        )
+
+        self.TIME_FORMATS = (
+            '%H:%M',
+            '%H:%M:%S',
+        )
+
+    def is_date_ddmmyyyy(self, word: str) -> bool:
+        for fmt in self.DDMMYYYY_FORMATS:
             try:
-                datetime.strptime(word, format)
-                self.date_ddmmyyyy.append(word)
-            except:
+                datetime.strptime(word, fmt)
+                return True
+            except ValueError:
                 pass
 
-        return self.date_ddmmyyyy
+        return False
 
-        # examples: 2004-08-12, 2020-01-01
-    def date_yyyymmdd_tokens(self, word:str) -> list:
-        formats = [r'%Y-%m-%d', r'%Y/%m/%d', r'%Y\%m\%d']
-        for format in formats:
+    def is_date_yyyymmdd(self, word: str) -> bool:
+        for fmt in self.YYYYMMDD_FORMATS:
             try:
-                if datetime.strptime(word, format):
-                    self.date_yyyymmdd.append(word)
-            except:
+                datetime.strptime(word, fmt)
+                return True
+            except ValueError:
                 pass
 
-        return self.date_yyyymmdd
+        return False
 
-        # examples: jan, january, feb
-    def month_name_tokens(self, word:str) -> list:
-        for month in self.months:
-            if month == word.lower() or month[:3] == word.lower():
-                self.month_name.append(word)
-            
-        return self.month_name
+    def is_month_name(self, word: str) -> bool:
+        word = word.lower()
 
-        # examples: mon, monday, fri
-    def weekday_tokens(self, word:str) -> list:
-        for week in self.weeks:
-            if week == word.lower() or week[:3] == word.lower():
-                self.weekday.append(word)
+        return (
+            word in self.MONTHS or
+            any(month.startswith(word) and len(word) == 3
+                for month in self.MONTHS)
+        )
 
-        return self.weekday
-        
-        # examples: 23:59, 0815
-    def time_tokens(self, word:str) -> list:
-        formats = [r'%H:%M:%S', r'%H:%M']
-        for format in formats:
+    def is_weekday(self, word: str) -> bool:
+        word = word.lower()
+
+        return (
+            word in self.WEEKS or
+            any(day.startswith(word) and len(word) == 3
+                for day in self.WEEKS)
+        )
+
+    def is_time(self, word: str) -> bool:
+        for fmt in self.TIME_FORMATS:
             try:
-                if datetime.strptime(word, format):
-                    self.time_list.append(word)
-            except:
+                datetime.strptime(word, fmt)
+                return True
+            except ValueError:
                 pass
-        
-        return self.time_list
+
+        return False
+    
 
 # ----------------------------------------
 # Pattern Tokens are stored in this class
@@ -191,43 +162,30 @@ class DateTimeListType:
 
 class PatternBasedListType:
     def __init__(self):
-        self.email_like = []
-        self.camel_case = []
-        self.snake_case = []
-        self.kebab_case = []    
+        self.EMAIL_REGEX = re.compile(
+            r'^[A-Za-z0-9!@#$%^&*()_+]+@[A-Za-z0-9.-]+.[A-Za-z]{2,7}$'
+        )
 
-        # examples: user@gmail.com, admin@domain.in
-    def email_like_tokens(self, word:str) -> list:
-        email_regex = r'[A-Za-z0-9!@#$%^&*()_+]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,7}'
+        self.CAMEL_CASE_REGEX = re.compile(
+            r'^[A-Z][a-z]+(?:[A-Z][a-z]+)*$'
+        )
 
-        if re.fullmatch(email_regex, word):
-            self.email_like.append(word)
+        self.SNAKE_CASE_REGEX = re.compile(
+            r'^[a-z0-9]+(?:_[a-z0-9]+)+$'
+        )
 
-        return self.email_like
+        self.KEBAB_CASE_REGEX = re.compile(
+            r'^[a-z0-9]+(?:-[a-z0-9]+)+$'
+        )   
 
-        # examples: MyPassword, UserName
-    def camel_case_tokens(self, word:str) -> list:
-        camel_case_regex = r'^[A-Z][a-z]+(?:[A-Z][a-z]+)*$'
+    def is_email_like(self, word: str) -> bool:
+        return bool(self.EMAIL_REGEX.fullmatch(word))
 
-        if re.match(camel_case_regex, word):
-            self.camel_case.append(word)
+    def is_camel_case(self, word: str) -> bool:
+        return bool(self.CAMEL_CASE_REGEX.fullmatch(word))
 
-        return self.camel_case
+    def is_snake_case(self, word: str) -> bool:
+        return bool(self.SNAKE_CASE_REGEX.fullmatch(word))
 
-        # examples: my_password, user_name_1
-    def snake_case_tokens(self, word:str) -> list:
-        snake_case_regex = r'^[a-z0-9]+(_[a-z0-9]+)+$'
-
-        if re.match(snake_case_regex, word):
-            self.snake_case.append(word)
-
-        return self.snake_case
-
-        # examples: my-password, user-name
-    def kebab_case_tokens(self, word:str) -> list:
-        kebab_case_regex = r'^[a-z]+(-[0-9a-z]+)+$'
-
-        if re.match(kebab_case_regex, word):
-            self.kebab_case.append(word)
-
-        return self.kebab_case
+    def is_kebab_case(self, word: str) -> bool:
+        return bool(self.KEBAB_CASE_REGEX.fullmatch(word))
