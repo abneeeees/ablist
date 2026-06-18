@@ -1,18 +1,9 @@
-from ablist.argument import *
-
-args = parser.parse_args()
-
-# Ill use an array temporary as a outoutput for the generated wordlist
-output = ["Avneesh101", "Kumar2024", "AblistIsAwesome", "PythonRocks", "WordlistGenerator", "CustomWordlist", "BruteforceTool", "Cybersecurity", "EthicalHacking", "PenTesting"]
-
-
-
 class FileHandler:
-    def __init__(self, FileName=None):
+    def __init__(self, FileName=None, final_word_list: list = []):
         self.File_Name = FileName or "output.txt"
+        self.final_word_list = final_word_list
 
     def save_as_txt(self):
-        with open(self.File_Name, 'w') as file:
-            for word in output:
-                file.write(word + '\n')
-
+        with open(self.File_Name, "w") as file:
+            for word in self.final_word_list:
+                file.write(word + "\n")
