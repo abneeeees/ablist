@@ -37,20 +37,19 @@ It is designed to assist in tasks such as **bruteforcing**, **password cracking*
 - example `ablist -o <filetype> <filename>` or `ablist --output <filetype> <filename>`
 - Available filetypes: `.pdf` `.xml` `.txt`
 - Types: 
-    - `ablist -oA <filename>` : for output in all format
-    - `ablist -oP <filename>` : for output in .pdf format
-    - `ablist -oX <filename>` : for output in .xml format
-    - `ablist -oT <filename>` : for output in .txt format **Default**
+    - `ablist -o D           ` : for output in all format
+    - `ablist -o T <filename>` : for output in .txt format **Default**
+    - `ablist -o B <filename>` : for both terminal and file output
 
 
 ### -m --mode
 - to tell ablist what mode to use while generating the wordlist
 - example `ablist -m <1-4>` or `ablist --mode <1-4>`
 - Types:
-    - `ablist -m 1` – **Basic Combinations**: Generates simple combinations using the given words in their original order.
-    - `ablist -m 2` – **Permutation Mode**: Generates all possible permutations of the given words up to the specified limit.
-    - `ablist -m 3` – **Case Variations**: Generates combinations with lowercase, uppercase, and mixed-case variations.
-    - `ablist -m 4` – **God Mode**: Generates combinations using case variations, word order changes, and numeric suffixes.
+    - `ablist -m 1` – **Fast Mode**: Fast Mode: Original words and basic combinations.
+    - `ablist -m 2` – **Smart Mode**: Smart Mode: Adds permutations and common word order changes.
+    - `ablist -m 3` – **Aggressive Mode**: Aggressive Mode: Adds case variations, capitalization patterns, and text mutations.
+    - `ablist -m 4` – **God Mode**: God Mode: Applies all permutations, case mutations, leetspeak, dates, numbers, prefixes, suffixes, separators, and pattern-based transformations.
 
 ---
 
