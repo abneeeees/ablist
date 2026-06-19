@@ -48,7 +48,7 @@ parser.add_argument(
     "--limits",
     type=int,
     choices=range(1, 30),
-    default=10,
+    default=30,
     required=False,
     metavar="<1-30>",
     help="Set a limit to number of words to generated in the output wordlist",
@@ -73,7 +73,7 @@ parser.add_argument(
 parser.add_argument(
     "-m",
     "--mode",
-    choices=range(1, 5),
+    choices=range(1, 4),
     type=int,
     required=False,
     metavar="<1-4>",
