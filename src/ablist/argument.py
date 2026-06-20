@@ -47,7 +47,7 @@ parser.add_argument(
     "-l",
     "--limits",
     type=int,
-    choices=range(1, 30),
+    choices=range(1, 31),
     default=30,
     required=False,
     metavar="<1-30>",
@@ -73,7 +73,7 @@ parser.add_argument(
 parser.add_argument(
     "-m",
     "--mode",
-    choices=range(1, 4),
+    choices=range(1, 5),
     type=int,
     required=False,
     metavar="<1-4>",
