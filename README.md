@@ -5,6 +5,16 @@ It is designed to assist in tasks such as **bruteforcing**, **password cracking*
 
 ---
 
+## Screenshot
+[](ablist/media/ablist.png)
+
+---
+
+## Working Demo
+[](ablist/media/ablist.mp4)
+
+---
+
 ## Key Features
 - Generate custom wordlists from a given set of words
 - Save output to a file format of your choice
