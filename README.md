@@ -6,12 +6,12 @@ It is designed to assist in tasks such as **bruteforcing**, **password cracking*
 ---
 
 ## Screenshot
-[](ablist/media/ablist.png)
+<img width="1701" height="745" alt="Screenshot From 2026-06-20 23-20-38" src="https://github.com/user-attachments/assets/2af99beb-c6ac-4b94-86dc-cef6196713b4" />
 
 ---
 
 ## Working Demo
-[](ablist/media/ablist.mp4)
+https://github.com/user-attachments/assets/00e4b853-7f48-4fc8-978e-6c1099aa40cd
 
 ---
 
