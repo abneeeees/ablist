@@ -34,74 +34,47 @@ class Transformer:
 
 
 class Generator(Transformer):
+    COMMON_NUMBERS = [
+        "1", "12", "123", "1234", "007", "69", "420", "777", "0011", "67", "00",
+    ]
+
+    COMMON_SEPARATORS = [
+        "_", "-", ".", "@", "$", "#", "&", "+", "!", "*", "~", "^", "=",
+    ]
+
     def __init__(self):
         pass
 
-    # aVneEsh101 -> AvNeEsH101
     def ToggleCase(self, word: str) -> str:
-        for x in range(len(word)):
-            if x % 2 == 0:
-                word = word[:x] + word[x].upper() + word[x + 1 :]
-            else:
-                word = word[:x] + word[x].lower() + word[x + 1 :]
-        return word
+        result = []
+        for i, ch in enumerate(word):
+            result.append(ch.upper() if i % 2 == 0 else ch.lower())
+        return "".join(result)
 
     def permutations(self, words: list, limit: int) -> list:
-        perm = permutations(words, limit)
-        return ["".join(p) for p in perm]
+        return ["".join(p) for p in permutations(words, limit)]
 
     def combinations(self, words: list, limit: int) -> list:
-        comb = combinations_with_replacement(words, limit)
-        return ["".join(c) for c in comb]
+        return ["".join(c) for c in combinations_with_replacement(words, limit)]
 
     def LeetSpeak(self, word: str) -> str:
-        LeetDict = {
-            "a": "@",
-            "A": "@",
-            "e": "3",
-            "E": "3",
-            "i": "1",
-            "I": "1",
-            "o": "0",
-            "O": "0",
-            "l": "1",
-            "L": "1",
-            "s": "$",
-            "S": "$",
-            "t": "7",
-            "T": "7",
-            "b": "8",
-            "B": "8",
+        leet_dict = {
+            "a": "@", "A": "@",
+            "e": "3", "E": "3",
+            "i": "1", "I": "1",
+            "o": "0", "O": "0",
+            "l": "1", "L": "1",
+            "s": "$", "S": "$",
+            "t": "7", "T": "7",
+            "b": "8", "B": "8",
         }
+        return "".join(leet_dict.get(x, x) for x in word)
 
-        return "".join(LeetDict[x] if x in LeetDict else x for x in word)
-
-    def AddCommonNumers(self, word: str) -> str:
-        COMMON_NUMBERS: list = [
-            "1",
-            "12",
-            "123",
-            "1234",
-            "007",
-            "69",
-            "420",
-            "777",
-            "0011",
-            "67",
-            "00",
-        ]
-
-        for num in COMMON_NUMBERS:
-            word = self.AddSuffix(word, num)
-        return word
+    def AddCommonNumbers(self, word: str) -> list:
+        return [self.AddSuffix(word, num) for num in self.COMMON_NUMBERS]
 
     def AddCommonSymbols(self, word1: str, word2: str) -> list:
-        COMMON_SEPARATORS = [
-            "_", "-", ".", "@", "$", "#", "&", "+", "!", "*", "~", "^", "=",
-        ]
-
-        for symbol in COMMON_SEPARATORS:
-            return [''.join(self.JoinWith(word1=word1, word2=word2, separator=symbol))]
+        return [self.JoinWith(word1, word2, s) for s in self.COMMON_SEPARATORS]
 
 
 class WordListModes(Generator):
@@ -112,27 +85,82 @@ class WordListModes(Generator):
         integer_tokens: list,
         date_time_tokens: list,
         pattern_based_tokens: list,
+        limit: int = 30,
     ):
+        super().__init__()
         self.final_word_list = final_word_list
         self.StringTokens = string_tokens
         self.IntegerTokens = integer_tokens
         self.DateTimeTokens = date_time_tokens
         self.PatternBasedTokens = pattern_based_tokens
+        self.limit = limit
+        self.all_words = list(set(
+            string_tokens
+            + integer_tokens
+            + date_time_tokens
+            + pattern_based_tokens
+        ))
 
-    def FastMode(self):
-        pass
-        
-    def SmartMode(self):
-        pass
+    def FastMode(self) -> list:
+        result = set(self.all_words)
+        for w1 in self.all_words:
+            for w2 in self.all_words:
+                result.add(self.JoinWords(w1, w2))
+        return list(result)[:self.limit]
 
-    def AggressiveMode(self):
-        pass
+    def SmartMode(self) -> list:
+        result = set(self.FastMode())
+        if len(self.all_words) >= 2:
+            for p in self.permutations(self.all_words, 2):
+                result.add(p)
+            for c in self.combinations(self.all_words, 2):
+                result.add(c)
+        return list(result)[:self.limit]
 
-    def GodMode(self):
-        pass
+    def AggressiveMode(self) -> list:
+        result = set(self.SmartMode())
+        for w in self.all_words:
+            result.add(self.Uppercase(w))
+            result.add(self.Lowercase(w))
+            result.add(self.Capitalize(w))
+            result.add(self.Title(w))
+            result.add(self.SwapCase(w))
+            result.add(self.ToggleCase(w))
+            result.add(self.LeetSpeak(w))
+            result.update(self.AddCommonNumbers(w))
+        for w1 in self.all_words:
+            for w2 in self.all_words:
+                if w1 != w2:
+                    result.update(self.AddCommonSymbols(w1, w2))
+        return list(result)[:self.limit]
 
-
-# Fast Mode: Original words and basic combinations.
-# Smart Mode: Adds permutations and common word order changes.
-# Aggressive Mode: Adds case variations, capitalization patterns, and text mutations.
-# God Mode: Applies all permutations, case mutations, leetspeak, dates, numbers, prefixes, suffixes, separators,
+    def GodMode(self) -> list:
+        result = set(self.AggressiveMode())
+        for w in self.all_words:
+            for num in self.COMMON_NUMBERS:
+                result.add(self.AddSuffix(w, num))
+                result.add(self.AddPrefix(w, num))
+            leet = self.LeetSpeak(w)
+            result.add(self.Uppercase(leet))
+            result.add(self.Lowercase(leet))
+            result.add(self.ToggleCase(leet))
+            for nw in self.AddCommonNumbers(w):
+                result.add(self.Uppercase(nw))
+                result.add(self.Lowercase(nw))
+                result.add(self.ToggleCase(nw))
+                result.add(self.LeetSpeak(nw))
+        if len(self.all_words) >= 2:
+            for w1 in self.all_words:
+                for w2 in self.all_words:
+                    if w1 != w2:
+                        for s in self.AddCommonSymbols(w1, w2):
+                            result.add(self.Uppercase(s))
+                            result.add(self.Lowercase(s))
+                            result.add(self.ToggleCase(s))
+                            result.add(self.LeetSpeak(s))
+        if len(self.all_words) >= 3:
+            for p in self.permutations(self.all_words, 3):
+                result.add(p)
+            for c in self.combinations(self.all_words, 3):
+                result.add(c)
+        return list(result)[:self.limit]
