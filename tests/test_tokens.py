@@ -1,4 +1,11 @@
-from ablist.token import *
+import email
+
+from ablist.token import (
+    DateTimeListType,
+    NumberBasedListType,
+    PatternBasedListType,
+    TextBasedListType,
+)
 
 testcase = [
     # ======================
@@ -153,32 +160,75 @@ number_based = NumberBasedListType()
 date_time_based = DateTimeListType()
 pattern_based = PatternBasedListType()
 
+lowercase:list = []
+uppercase:list = []
+capitalized:list = []
+alphanumeric:list = []
+special_char_only:list = []
+
 for word in testcase:
     # text based
-    lowercase = text_based.lowercase_tokens(word)
-    uppercase = text_based.uppercase_tokens(word)
-    capitalized = text_based.capitalized_tokens(word)
-    alphanumeric = text_based.alphanumeric_tokens(word)
-    special_char_only = text_based.special_char_only_tokens(word)
+    if(text_based.lowercase_tokens(word)):
+        lowercase.append(word)
+    if(text_based.uppercase_tokens(word)):
+        uppercase.append(word)
+    if(text_based.capitalized_tokens(word)):
+        capitalized.append(word)
+    if(text_based.alphanumeric_tokens(word)):
+        alphanumeric.append(word)
+    if(text_based.special_char_only_tokens(word)):
+        special_char_only.append(word)
 
+float:list = []
+short_number:list = []
+long_number:list = []
+padded_number:list = []
+
+for word in testcase:
     # number based
-    float = number_based.float_tokens(word)
-    short_number = number_based.short_number_tokens(word)
-    long_number = number_based.long_number_tokens(word)
-    padded_number = number_based.padded_number_tokens(word)
+    if(number_based.float_tokens(word)):
+        float.append(word)
+    if(number_based.short_number_tokens(word)):
+        short_number.append(word)
+    if(number_based.long_number_tokens(word)):
+        long_number.append(word)
+    if(number_based.padded_number_tokens(word)):
+        padded_number.append(word)
 
+date_ddmmyyyy:list = []
+date_yyyymmdd:list = []
+month_name:list = []
+weekday:list = []
+time:list = []
+
+for word in testcase:
     # date based
-    date_ddmmyyyy = date_time_based.date_ddmmyyyy_tokens(word)
-    date_yyyymmdd = date_time_based.date_yyyymmdd_tokens(word)
-    month_name = date_time_based.month_name_tokens(word)
-    weekday = date_time_based.weekday_tokens(word)
-    time = date_time_based.time_tokens(word)
+    if(date_time_based.is_date_ddmmyyyy(word)):
+        date_ddmmyyyy.append(word)
+    if(date_time_based.is_date_yyyymmdd(word)):
+        date_yyyymmdd.append(word)
+    if(date_time_based.is_month_name(word)):
+        month_name.append(word)
+    if(date_time_based.is_weekday(word)):
+        weekday.append(word)
+    if(date_time_based.is_time(word)):
+        time.append(word)
 
-    # pattern based
-    email_like = pattern_based.email_like_tokens(word)
-    camel_case = pattern_based.camel_case_tokens(word)
-    snake_case = pattern_based.snake_case_tokens(word)
-    kebab_case = pattern_based.kebab_case_tokens(word)
+email_like:list = []
+camel_case:list = []
+snake_case:list = []
+kebab_case:list = []
+
+# pattern based
+for word in testcase:
+    if(pattern_based.is_email_like(word)):
+        email_like.append(word)
+    if(pattern_based.is_camel_case(word)):
+        camel_case.append(word)
+    if(pattern_based.is_snake_case(word)):
+        snake_case.append(word)
+    if(pattern_based.is_kebab_case(word)):
+        kebab_case.append(word)
 
 print("\nlowercase\t : ", lowercase)
 print("\nuppercase\t : ", uppercase)
