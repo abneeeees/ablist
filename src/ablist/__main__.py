@@ -87,9 +87,25 @@ def create_tokens(words: list) -> dict:
     return tokens
 
 
-def engine(tokens: dict, final_word_list: list) -> list:
+def engine(tokens: dict, final_word_list: list, limits: int, mode: int | None = None) -> list:
+    wlm = WordListModes(
+        final_word_list=final_word_list,
+        string_tokens=tokens["StringTokens"],
+        integer_tokens=tokens["IntegerTokens"],
+        date_time_tokens=tokens["DateTimeTokens"],
+        pattern_based_tokens=tokens["PatternBasedTokens"],
+        limit=limits,
+    )
 
-    return final_word_list
+    if mode is None or mode == 1:
+        return wlm.FastMode()
+    elif mode == 2:
+        return wlm.SmartMode()
+    elif mode == 3:
+        return wlm.AggressiveMode()
+    elif mode == 4:
+        return wlm.GodMode()
+    return wlm.FastMode()
 
 
 def filehandling(filename_and_filetype: list, final_word_list: list) -> None:
@@ -138,7 +154,7 @@ def main():
     FinalWordList: list = []
 
     tokens = create_tokens(args.words)
-    final_output = engine(tokens, FinalWordList)
+    final_output = engine(tokens, FinalWordList, args.limits, args.mode)
     filehandling(args.output, final_output)
 
 
