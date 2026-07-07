@@ -24,7 +24,7 @@ parser = argparse.ArgumentParser(
         Key Features:
         * Generate custom wordlists from a given set of words
         * Save output to a file format of your choice
-        * Control the number of words generated in the output (1-30)
+        * Control the number of words generated in the output (1-500)
         * Choose between four different generation modes
         * Simple and lightweight CLI usage""",
     formatter_class=argparse.RawTextHelpFormatter,
@@ -47,8 +47,8 @@ parser.add_argument(
     "-l",
     "--limits",
     type=int,
-    choices=range(1, 31),
-    default=30,
+    choices=range(1, 501),
+    default=100,
     required=False,
     metavar="<1-30>",
     help="Set a limit to number of words to generated in the output wordlist",
